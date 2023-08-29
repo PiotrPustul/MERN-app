@@ -13,7 +13,7 @@ body {
   background: #4d4d4d;
 }
 
-/* .slide-in-left-enter {
+.slide-in-left-enter {
   transform: translateX(-100%);
 }
 
@@ -39,4 +39,4 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-} */
+} 
