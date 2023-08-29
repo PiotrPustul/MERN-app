@@ -8,14 +8,16 @@ import {
 import Users from '../user/pages/Users'
 import NewPlace from '../places/pages/NewPlace'
 import NotFoundPage from './NotFoundPage'
+import UserPlaces from '../places/pages/UserPlaces'
 
 // layouts
-import RootLayout from '../layouts/RootLayout'
+import RootLayout from './layouts/RootLayout'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<RootLayout />}>
       <Route index element={<Users />} />
+      <Route path=':userId/places' element={<UserPlaces />} />
       <Route path='places'>
         <Route path='new' element={<NewPlace />} />
       </Route>
