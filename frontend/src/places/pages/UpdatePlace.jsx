@@ -4,7 +4,7 @@ import Button from '../../shared/components/FormElements/Button'
 import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
-} from '../../shared/components/util/validators'
+} from '../../shared/util/validators'
 import './PlaceForm.css'
 
 const DUMMY_PLACES = [

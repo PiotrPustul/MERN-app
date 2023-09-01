@@ -19,13 +19,13 @@ const router = createBrowserRouter(
     <Route path='/' element={<RootLayout />}>
       <Route index element={<Users />} />
       <Route path=':userId/places' element={<UserPlaces />} />
+      <Route
+        path=':userId/places/:placeId'
+        element={<UpdatePlace />}
+        loader={updatePlaceLoader}
+      />
       <Route path='places'>
         <Route path='new' element={<NewPlace />} />
-        <Route
-          path=':placeId'
-          element={<UpdatePlace />}
-          loader={updatePlaceLoader}
-        />
       </Route>
       <Route path='*' element={<NotFoundPage />} />
     </Route>
