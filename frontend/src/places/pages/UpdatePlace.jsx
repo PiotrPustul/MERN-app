@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
+import { useForm } from '../../shared/hooks/form-hook'
 import Input from '../../shared/components/FormElements/Input'
 import Button from '../../shared/components/FormElements/Button'
+import Card from '../../shared/components/UIElements/Card'
 import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
 } from '../../shared/util/validators'
-import { useForm } from '../../shared/hooks/form-hook'
 import './PlaceForm.css'
 
 const DUMMY_PLACES = [
@@ -25,7 +26,7 @@ const DUMMY_PLACES = [
   },
   {
     id: 'p2',
-    title: 'Empire State Building',
+    title: 'Emp...',
     description: 'Famous building',
     imageUrl:
       'https://www.civitatis.com/f/estados-unidos/nueva-york/big/entrada-empire-state.jpg',
@@ -71,7 +72,9 @@ const UpdatePlace = () => {
   if (!identifiedPlace) {
     return (
       <div className='center'>
-        <h2>Could not find the place.</h2>
+        <Card>
+          <h2>Could not find the place.</h2>
+        </Card>
       </div>
     )
   }
@@ -79,7 +82,9 @@ const UpdatePlace = () => {
   if (isLoading) {
     return (
       <div className='center'>
-        <h2>Loading...</h2>
+        <Card>
+          <h2>Loading...</h2>
+        </Card>
       </div>
     )
   }

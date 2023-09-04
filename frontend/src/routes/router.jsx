@@ -24,7 +24,7 @@ const router = createBrowserRouter(
         element={<UpdatePlace />}
         loader={updatePlaceLoader}
       />
-      <Route path='places/new' element={<NewPlace />} />
+      <Route path=':userID/places/new' element={<NewPlace />} />
       <Route path='*' element={<NotFoundPage />} />
     </Route>
   )

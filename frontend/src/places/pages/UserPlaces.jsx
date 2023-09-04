@@ -17,7 +17,7 @@ const DUMMY_PLACES = [
   },
   {
     id: 'p2',
-    title: 'Empire State Building',
+    title: 'Emp...',
     description: 'Famous building',
     imageUrl:
       'https://www.civitatis.com/f/estados-unidos/nueva-york/big/entrada-empire-state.jpg',
