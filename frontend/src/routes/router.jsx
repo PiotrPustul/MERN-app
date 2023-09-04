@@ -10,6 +10,7 @@ import NotFoundPage from './NotFoundPage'
 import NewPlace from '../places/pages/NewPlace'
 import UserPlaces from '../places/pages/UserPlaces'
 import UpdatePlace, { updatePlaceLoader } from '../places/pages/UpdatePlace'
+import Auth from '../user/pages/Auth'
 
 // layouts
 import RootLayout from './layouts/RootLayout'
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
         loader={updatePlaceLoader}
       />
       <Route path=':userID/places/new' element={<NewPlace />} />
+      <Route path='auth' element={<Auth />} />
       <Route path='*' element={<NotFoundPage />} />
     </Route>
   )
