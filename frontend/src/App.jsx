@@ -4,7 +4,9 @@ import {
   createRoutesFromElements,
   Navigate,
   Route,
+  RouterProvider,
 } from 'react-router-dom'
+import { AuthContext } from './shared/context/auth-context'
 
 // pages
 import Users from './user/pages/Users'
@@ -16,8 +18,6 @@ import Auth from './user/pages/Auth'
 
 // layouts
 import RootLayout from './shared/layouts/RootLayout'
-import { AuthContext } from './shared/context/auth-context'
-import { RouterProvider } from 'react-router-dom'
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
