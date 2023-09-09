@@ -1,12 +1,18 @@
 const express = require('express')
+const { check } = require('express-validator')
+
+const usersControllers = require('../controllers/users-controllers')
 
 const router = express.Router()
 
-const DUMMY_USERS = [
-  {
-    id: 'u1',
-    name: 'Piotr',
-    image: 'https://picsum.photos/id/237/536/354',
-    places: 3,
-  },
-]
+router.get('/', usersControllers.getAllUsers)
+router.post(
+  '/signup',
+  check('name').not().isEmpty(),
+  check('email').normalizeEmail().isEmail(),
+  check('password').isLength(6),
+  usersControllers.signup
+)
+router.post('/login', usersControllers.login)
+
+module.exports = router
