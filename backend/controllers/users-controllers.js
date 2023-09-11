@@ -7,9 +7,7 @@ const DUMMY_USERS = [
     id: 'u1',
     name: 'Piotr',
     email: 'a@a.a',
-    password: '12345',
-    // image: 'https://picsum.photos/id/237/536/354',
-    // places: 3,
+    password: '123456',
   },
 ]
 
