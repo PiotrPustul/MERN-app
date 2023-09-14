@@ -3,6 +3,7 @@ const { validationResult } = require('express-validator')
 
 const HttpError = require('../models/http-error')
 const getCoordsForAddress = require('../util/location')
+const Place = require('../models/placeSchema')
 
 let DUMMY_PLACES = [
   {
@@ -72,16 +73,21 @@ const createPlace = async (req, res, next) => {
     return next(error)
   }
 
-  const createdPlace = {
-    id: uuidv4(),
+  const createdPlace = new Place({
     title,
     description,
-    location: coordinates,
     address,
+    location: coordinates,
+    imgage:
+      'https://media.cntraveler.com/photos/57d87670fd86274a1db91acd/1:1/w_1536,h_1536,c_limit/most-beautiful-paris-pont-alexandre-iii-GettyImages-574883771.jpg',
     creator,
-  }
+  })
 
-  DUMMY_PLACES.push(createdPlace)
+  try {
+    await createdPlace.save()
+  } catch (error) {
+    return next(new HttpError('Could not create a place', 500))
+  }
 
   res.status(201).json({ place: createdPlace })
 }
