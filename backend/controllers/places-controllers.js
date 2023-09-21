@@ -90,7 +90,6 @@ const createPlace = async (req, res, next) => {
   if (!user) {
     return next(new HttpError('Could not find a user for provided id.', 404))
   }
-  console.log(user)
 
   try {
     const sess = await startSession()
@@ -152,21 +151,37 @@ const deletePlaceById = async (req, res, next) => {
 
   let place
   try {
-    place = await Place.findOneAndDelete({ _id: placeId })
-
-    if (!place) {
-      const error = new HttpError('Place not found.', 404)
-      return next(error)
-    }
-
-    res.status(200).json({ message: 'Deleted place' })
+    place = await Place.findById(placeId).populate('creator')
   } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not find a place.',
+      500
+    )
+    return next(error)
+  }
+
+  if (!place) {
+    const error = new HttpError('Place not found.', 404)
+    return next(error)
+  }
+
+  try {
+    const sess = await startSession()
+    sess.startTransaction()
+    await Place.deleteOne({ _id: place._id }, { session: sess })
+    place.creator.places.pull(place)
+    await place.creator.save({ session: sess })
+    await sess.commitTransaction()
+  } catch (err) {
+    console.log(err)
     const error = new HttpError(
       'Something went wrong, could not delete a place.',
       500
     )
     return next(error)
   }
+
+  res.status(200).json({ message: 'Deleted place' })
 }
 
 exports.getPlaceById = getPlaceById
