@@ -1,4 +1,3 @@
-const { v4: uuidv4 } = require('uuid')
 const { validationResult } = require('express-validator')
 
 const HttpError = require('../models/http-error')
@@ -30,7 +29,7 @@ const signup = async (req, res, next) => {
     return next(error)
   }
 
-  const { name, email, password, places } = req.body
+  const { name, email, password } = req.body
 
   let existingUser
 
@@ -58,7 +57,7 @@ const signup = async (req, res, next) => {
     password,
     image:
       'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',
-    places,
+    places: [],
   })
 
   try {

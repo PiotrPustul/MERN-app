@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model, Types } = require('mongoose')
 
 const placeSchema = new Schema({
   title: { type: String, require: true },
@@ -9,7 +9,7 @@ const placeSchema = new Schema({
     lat: { type: Number, require: true },
     lng: { type: Number, require: true },
   },
-  creator: { type: String, require: true },
+  creator: { type: Types.ObjectId, require: true, ref: 'User' },
 })
 
 module.exports = model('Place', placeSchema)
