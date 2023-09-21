@@ -18,7 +18,9 @@ const Auth = () => {
   const [isLoginMode, setIsLoginMode] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState()
+
   const auth = useContext(AuthContext)
+
   const [formState, inputHandler, setFormData] = useForm(
     {
       email: {
