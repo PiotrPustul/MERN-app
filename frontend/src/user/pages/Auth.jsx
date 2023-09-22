@@ -8,6 +8,7 @@ import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner'
 import { AuthContext } from '../../shared/context/auth-context'
 import { useForm } from '../../shared/hooks/form-hook'
 import { useHttpClient } from '../../shared/hooks/http-hook'
+import ImageUpload from '../../shared/components/FormElements/ImageUpload'
 import {
   VALIDATOR_EMAIL,
   VALIDATOR_MINLENGTH,
@@ -37,7 +38,11 @@ const Auth = () => {
   const switchModeHandler = () => {
     if (!isLoginMode) {
       setFormData(
-        { ...formState.inputs, name: undefined },
+        {
+          ...formState.inputs,
+          name: undefined,
+          image: undefined,
+        },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       )
     } else {
@@ -46,6 +51,10 @@ const Auth = () => {
           ...formState.inputs,
           name: {
             value: '',
+            isValid: false,
+          },
+          image: {
+            value: null,
             isValid: false,
           },
         },
@@ -113,6 +122,9 @@ const Auth = () => {
               onInput={inputHandler}
             />
           )}
+          {!isLoginMode && (
+            <ImageUpload id='image' center onInput={inputHandler} />
+          )}
           <Input
             element='input'
             id='email'
@@ -132,11 +144,11 @@ const Auth = () => {
             onInput={inputHandler}
           />
           <Button type='submit' disabled={!formState.isValid}>
-            {isLoginMode ? 'Login' : 'SIGNUP'}
+            {isLoginMode ? 'LOGIN' : 'SIGNUP'}
           </Button>
         </form>
         <Button inverse onClick={switchModeHandler}>
-          {isLoginMode ? 'SWITCH TO SIGN UP' : 'SWITCH TO LOGIN'}
+          SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
         </Button>
       </Card>
     </>
