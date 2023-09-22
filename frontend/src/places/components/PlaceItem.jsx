@@ -90,8 +90,10 @@ const PlaceItem = (props) => {
             <Button inverse onClick={openMapHandler}>
               View On Map
             </Button>
-            {authCtx.isLoggedIn && <Button to={`${props.id}`}>Edit</Button>}
-            {authCtx.isLoggedIn && (
+            {authCtx.userId === props.creatorId && (
+              <Button to={`${props.id}`}>Edit</Button>
+            )}
+            {authCtx.userId === props.creatorId && (
               <Button danger onClick={showDeleteWarningHandler}>
                 Delete
               </Button>
