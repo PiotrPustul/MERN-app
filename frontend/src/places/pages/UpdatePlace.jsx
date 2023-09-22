@@ -31,8 +31,6 @@ const UpdatePlace = () => {
     false
   )
 
-  console.log(formState.inputs)
-
   useEffect(() => {
     const fetchPlace = async () => {
       try {

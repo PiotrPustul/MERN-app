@@ -13,7 +13,7 @@ import Users from './user/pages/Users'
 import NotFoundPage from './places/pages/NotFoundPage'
 import NewPlace from './places/pages/NewPlace'
 import UserPlaces from './places/pages/UserPlaces'
-import UpdatePlace, { updatePlaceLoader } from './places/pages/UpdatePlace'
+import UpdatePlace from './places/pages/UpdatePlace'
 import Auth from './user/pages/Auth'
 
 // layouts
@@ -45,7 +45,7 @@ const App = () => {
           }
         />
         <Route
-          path=':userID/places/new'
+          path='places/new'
           element={isLoggedIn ? <NewPlace /> : <Navigate replace to='/auth' />}
         />
         <Route
