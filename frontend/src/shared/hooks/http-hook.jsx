@@ -4,13 +4,13 @@ export const useHttpClient = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState()
 
-  const activeHttpRequest = useRef([])
+  const activeHttpRequests = useRef([])
 
   const sendRequest = useCallback(
     async (url, method = 'GET', body = null, headers = {}) => {
       setIsLoading(true)
       const httpAbortCtrl = new AbortController()
-      activeHttpRequest.current.push(httpAbortCtrl)
+      activeHttpRequests.current.push(httpAbortCtrl)
 
       try {
         const response = await fetch(url, {
@@ -20,9 +20,13 @@ export const useHttpClient = () => {
           signal: httpAbortCtrl.signal,
         })
 
+        if (httpAbortCtrl.signal.aborted) {
+          return
+        }
+
         const responseData = await response.json()
 
-        activeHttpRequest.current = activeHttpRequest.current.filter(
+        activeHttpRequests.current = activeHttpRequests.current.filter(
           (reqCtrl) => reqCtrl !== httpAbortCtrl
         )
 
@@ -33,6 +37,10 @@ export const useHttpClient = () => {
         setIsLoading(false)
         return responseData
       } catch (err) {
+        if (err.name === 'AbortError') {
+          return
+        }
+
         setError(err.message)
         setIsLoading(false)
         throw err
@@ -47,7 +55,7 @@ export const useHttpClient = () => {
 
   useEffect(() => {
     return () => {
-      activeHttpRequest.current.forEach((abortCtrl) => abortCtrl.abort()) // the warning is fine!
+      activeHttpRequests.current.forEach((abortCtrl) => abortCtrl.abort())
     }
   }, [])
 
