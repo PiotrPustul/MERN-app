@@ -1,40 +1,41 @@
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+
+import { useHttpClient } from '../../shared/hooks/http-hook'
+import ErrorModal from '../../shared/components/UIElements/ErrorModal'
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner'
 import PlaceList from '../components/PlaceList'
 
-const DUMMY_PLACES = [
-  {
-    id: 'p1',
-    title: 'Empire State Building',
-    description: 'Famous building',
-    imageUrl:
-      'https://www.civitatis.com/f/estados-unidos/nueva-york/big/entrada-empire-state.jpg',
-    address: '20 W 34th St., New York, NY 10001, United States',
-    location: {
-      lat: 40.7484405,
-      lng: -73.9856644,
-    },
-    creator: 'u1',
-  },
-  {
-    id: 'p2',
-    title: 'Emp...',
-    description: 'Famous building',
-    imageUrl:
-      'https://www.civitatis.com/f/estados-unidos/nueva-york/big/entrada-empire-state.jpg',
-    address: '20 W 34th St., New York, NY 10001, United States',
-    location: {
-      lat: 40.7484405,
-      lng: -73.9856644,
-    },
-    creator: 'u2',
-  },
-]
-
 const UserPlaces = () => {
-  const userId = useParams().userId
-  const loadedPlaces = DUMMY_PLACES.filter((place) => place.creator === userId)
+  const [loadedPlaces, setLoadedPlaces] = useState()
+  const { isLoading, error, sendRequest, clearError } = useHttpClient()
 
-  return <PlaceList items={loadedPlaces} />
+  const userId = useParams().userId
+
+  useEffect(() => {
+    const fetchPlaces = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:8000/api/places/user/${userId}`
+        )
+
+        setLoadedPlaces(responseData.places)
+      } catch (err) {}
+    }
+    fetchPlaces()
+  }, [sendRequest, userId])
+
+  return (
+    <>
+      <ErrorModal error={error} onClear={clearError} />
+      {isLoading && (
+        <div className='center'>
+          <LoadingSpinner />
+        </div>
+      )}
+      {!isLoading && loadedPlaces && <PlaceList items={loadedPlaces} />}
+    </>
+  )
 }
 
 export default UserPlaces
