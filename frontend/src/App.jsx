@@ -27,6 +27,7 @@ const App = () => {
     setIsLoggedIn(true)
     setUserId(uid)
   }, [])
+
   const logout = useCallback(() => {
     setIsLoggedIn(false)
     setUserId(null)
@@ -42,7 +43,6 @@ const App = () => {
           element={
             isLoggedIn ? <UpdatePlace /> : <Navigate replace to='/auth' />
           }
-          loader={updatePlaceLoader}
         />
         <Route
           path=':userID/places/new'
