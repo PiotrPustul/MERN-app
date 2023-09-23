@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
@@ -30,7 +32,19 @@ app.use((req, res, next) => {
   throw new HttpError('Could not find the route.', 404)
 })
 
+/**
+ * General error handler
+ */
 app.use((error, req, res, next) => {
+  /**
+   * Check if there is a file (image) in the request body - delete a file if we got an error
+   *  */
+  if (req.file) {
+    fs.unlink(req.file.path, (err) => {
+      console.log(err)
+    })
+  }
+
   if (res.headerSent) {
     return next(error)
   }

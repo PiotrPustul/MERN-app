@@ -50,7 +50,7 @@ const ImageUpload = (props) => {
         id={props.id}
         ref={filePickerRef}
         style={{ display: 'none' }}
-        accept='.jpg, .png. .jpeg'
+        accept='.jpg, .png, .jpeg'
         onChange={pickedHandler}
       />
       <div className={`image-upload ${props.center && 'center'}`}>

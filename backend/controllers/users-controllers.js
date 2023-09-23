@@ -54,9 +54,8 @@ const signup = async (req, res, next) => {
   const newUser = new User({
     name,
     email,
+    image: req.file.path,
     password,
-    image:
-      'https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',
     places: [],
   })
 
