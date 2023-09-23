@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -12,6 +13,12 @@ const HttpError = require('./models/http-error')
 const app = express()
 
 app.use(bodyParser.json())
+
+/**
+ * Handle all req starting with the path /upload/images
+ * express.static will return file stored in /upload/images
+ */
+app.use('/uploads/images', express.static(path.join('uploads', 'images')))
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
