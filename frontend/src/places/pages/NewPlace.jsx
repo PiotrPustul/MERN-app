@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../shared/context/auth-context'
 import { useHttpClient } from '../../shared/hooks/http-hook'
 import { useForm } from '../../shared/hooks/form-hook'
+import ImageUpload from '../../shared/components/FormElements/ImageUpload'
 import Input from '../../shared/components/FormElements/Input'
 import Button from '../../shared/components/FormElements/Button'
 import ErrorModal from '../../shared/components/UIElements/ErrorModal'
@@ -34,27 +35,40 @@ const NewPlace = () => {
         value: '',
         isValid: false,
       },
+      image: {
+        value: null,
+        isValid: false,
+      },
     },
     false
   )
 
   const placeSubmitHandler = async (event) => {
     event.preventDefault()
-
     try {
+      /**
+       *  JSON works only with strings
+       *  and doesn't work with binary data like image so we can use formData
+       */
+      const formData = new FormData()
+      formData.append('title', formState.inputs.title.value)
+      formData.append('description', formState.inputs.description.value)
+      formData.append('address', formState.inputs.address.value)
+      formData.append('creator', authCtx.userId)
+      /**
+       * The image field was set up in places-routes on backend in FileUpload
+       *  */
+      formData.append('image', formState.inputs.image.value)
+
       await sendRequest(
         'http://localhost:8000/api/places/',
         'POST',
-        JSON.stringify({
-          title: formState.inputs.title.value,
-          description: formState.inputs.description.value,
-          address: formState.inputs.address.value,
-          creator: authCtx.userId,
-        }),
-        {
-          'Content-Type': 'application/json',
-        }
+        /**
+         * FormData - fetchAPI in sendRequest automatically will add a headers
+         */
+        formData
       )
+
       navigate('/')
     } catch (err) {}
   }
@@ -90,6 +104,12 @@ const NewPlace = () => {
           validators={[VALIDATOR_REQUIRE()]}
           errorText='Please enter a valid Address.'
           onInput={inputHandler}
+        />
+        <ImageUpload
+          id='image'
+          center
+          onInput={inputHandler}
+          errorText='Please add an image.'
         />
         <Button type='submit' disabled={!formState.isValid}>
           Add Place
