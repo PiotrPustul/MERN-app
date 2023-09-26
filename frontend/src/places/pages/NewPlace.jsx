@@ -66,7 +66,10 @@ const NewPlace = () => {
         /**
          * FormData - fetchAPI in sendRequest automatically will add a headers
          */
-        formData
+        formData,
+        {
+          Authorization: 'Bearer ' + authCtx.token,
+        }
       )
 
       navigate('/')

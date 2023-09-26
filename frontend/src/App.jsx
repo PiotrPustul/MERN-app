@@ -20,16 +20,16 @@ import Auth from './user/pages/Auth'
 import RootLayout from './shared/layouts/RootLayout'
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [token, setToken] = useState(false)
   const [userId, setUserId] = useState(false)
 
-  const login = useCallback((uid) => {
-    setIsLoggedIn(true)
+  const login = useCallback((uid, token) => {
+    setToken(token)
     setUserId(uid)
   }, [])
 
   const logout = useCallback(() => {
-    setIsLoggedIn(false)
+    setToken(null)
     setUserId(null)
   }, [])
 
@@ -40,18 +40,13 @@ const App = () => {
         <Route path=':userId/places' element={<UserPlaces />} />
         <Route
           path=':userId/places/:placeId'
-          element={
-            isLoggedIn ? <UpdatePlace /> : <Navigate replace to='/auth' />
-          }
+          element={token ? <UpdatePlace /> : <Navigate replace to='/auth' />}
         />
         <Route
           path='places/new'
-          element={isLoggedIn ? <NewPlace /> : <Navigate replace to='/auth' />}
+          element={token ? <NewPlace /> : <Navigate replace to='/auth' />}
         />
-        <Route
-          path='auth'
-          element={!isLoggedIn ? <Auth /> : <Navigate to='/' />}
-        />
+        <Route path='auth' element={!token ? <Auth /> : <Navigate to='/' />} />
         <Route path='*' element={<NotFoundPage />} />
       </Route>
     )
@@ -60,7 +55,8 @@ const App = () => {
   return (
     <AuthContext.Provider
       value={{
-        isLoggedIn: isLoggedIn,
+        isLoggedIn: !!token,
+        token: token,
         userId: userId,
         login: login,
         logout: logout,
