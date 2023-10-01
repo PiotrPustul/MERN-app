@@ -54,7 +54,6 @@ const NewPlace = () => {
       formData.append('title', formState.inputs.title.value)
       formData.append('description', formState.inputs.description.value)
       formData.append('address', formState.inputs.address.value)
-      formData.append('creator', authCtx.userId)
       /**
        * The image field was set up in places-routes on backend in FileUpload
        *  */
