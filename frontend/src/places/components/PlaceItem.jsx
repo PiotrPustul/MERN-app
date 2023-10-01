@@ -30,14 +30,20 @@ const PlaceItem = (props) => {
     setShowConfirmModal(false)
   }
 
+  /**
+   *  Users's Place Delete Request
+   */
   const confirmDeleteHandler = async () => {
     setShowConfirmModal(false)
 
     try {
       await sendRequest(
         `http://localhost:8000/api/places/${props.id}`,
-        'DELETE'
+        'DELETE',
+        null,
+        { Authorization: 'Bearer ' + authCtx.token }
       )
+
       props.onDelete(props.id)
       navigate(`/${authCtx.userId}/places`)
     } catch (err) {}

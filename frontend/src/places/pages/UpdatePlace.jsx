@@ -55,6 +55,9 @@ const UpdatePlace = () => {
     fetchPlace()
   }, [sendRequest, placeId, setFormData])
 
+  /**
+   *   Update Place
+   */
   const placeUpdateSubmitHandler = async (event) => {
     event.preventDefault()
 
@@ -68,6 +71,7 @@ const UpdatePlace = () => {
         }),
         {
           'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + authCtx.token,
         }
       )
 
