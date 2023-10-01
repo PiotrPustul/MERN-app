@@ -106,7 +106,6 @@ const login = async (req, res, next) => {
   const { email, password } = req.body
 
   let existingUser
-
   try {
     existingUser = await User.findOne({ email: email })
   } catch (err) {
@@ -118,7 +117,7 @@ const login = async (req, res, next) => {
   }
 
   if (!existingUser) {
-    const error = new HttpError('Invalid credentials, Could not log in.', 401)
+    const error = new HttpError('Invalid credentials, Could not log in.', 403)
     return next(error)
   }
 
@@ -134,7 +133,7 @@ const login = async (req, res, next) => {
   }
 
   if (!isValidPassword) {
-    const error = new HttpError('Invalid credentials, Could not log in.', 401)
+    const error = new HttpError('Invalid credentials, Could not log in.', 403)
     return next(error)
   }
 

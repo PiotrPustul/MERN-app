@@ -7,6 +7,7 @@ const fileUpload = require('../middleware/file-upload')
 const router = express.Router()
 
 router.get('/', usersControllers.getAllUsers)
+
 router.post(
   '/signup',
   fileUpload.single('image'),
@@ -15,6 +16,7 @@ router.post(
   check('password').isLength(6),
   usersControllers.signup
 )
+
 router.post('/login', usersControllers.login)
 
 module.exports = router
