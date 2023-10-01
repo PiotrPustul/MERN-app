@@ -1,4 +1,3 @@
-import { useState, useCallback, useEffect } from 'react'
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -16,66 +15,14 @@ import UserPlaces from './places/pages/UserPlaces'
 import UpdatePlace from './places/pages/UpdatePlace'
 import Auth from './user/pages/Auth'
 
+// hooks
+import { useAuth } from './shared/hooks/auth-hook'
+
 // layouts
 import RootLayout from './shared/layouts/RootLayout'
 
-let logoutTimer
-
 const App = () => {
-  const [token, setToken] = useState(false)
-  const [tokenExpiration, setTokenExpiration] = useState()
-  const [userId, setUserId] = useState(false)
-
-  const login = useCallback((uid, token, expirationDate) => {
-    setToken(token)
-    setUserId(uid)
-
-    const tokenExpirationDate =
-      expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60)
-    setTokenExpiration(tokenExpirationDate)
-
-    localStorage.setItem(
-      'userData',
-      JSON.stringify({
-        userId: uid,
-        token: token,
-        expiration: tokenExpirationDate.toISOString(),
-      })
-    )
-  }, [])
-
-  const logout = useCallback(() => {
-    setToken(null)
-    setTokenExpiration(null)
-    setUserId(null)
-    localStorage.removeItem('userData')
-  }, [])
-
-  useEffect(() => {
-    if (token && tokenExpiration) {
-      const remainingTime = tokenExpiration.getTime() - new Date().getTime()
-
-      logoutTimer = setTimeout(logout, remainingTime)
-    } else {
-      clearTimeout(logoutTimer)
-    }
-  }, [token, logout, tokenExpiration])
-
-  useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem('userData'))
-
-    if (
-      storedData &&
-      storedData.token &&
-      new Date(storedData.expiration) > new Date()
-    ) {
-      login(
-        storedData.userId,
-        storedData.token,
-        new Date(storedData.expiration)
-      )
-    }
-  }, [login])
+  const { token, login, logout, userId } = useAuth()
 
   const router = createBrowserRouter(
     createRoutesFromElements(
