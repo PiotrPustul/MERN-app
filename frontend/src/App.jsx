@@ -19,8 +19,11 @@ import Auth from './user/pages/Auth'
 // layouts
 import RootLayout from './shared/layouts/RootLayout'
 
+let logoutTimer
+
 const App = () => {
   const [token, setToken] = useState(false)
+  const [tokenExpiration, setTokenExpiration] = useState()
   const [userId, setUserId] = useState(false)
 
   const login = useCallback((uid, token, expirationDate) => {
@@ -29,6 +32,7 @@ const App = () => {
 
     const tokenExpirationDate =
       expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60)
+    setTokenExpiration(tokenExpirationDate)
 
     localStorage.setItem(
       'userData',
@@ -42,10 +46,20 @@ const App = () => {
 
   const logout = useCallback(() => {
     setToken(null)
+    setTokenExpiration(null)
     setUserId(null)
-
     localStorage.removeItem('userData')
   }, [])
+
+  useEffect(() => {
+    if (token && tokenExpiration) {
+      const remainingTime = tokenExpiration.getTime() - new Date().getTime()
+
+      logoutTimer = setTimeout(logout, remainingTime)
+    } else {
+      clearTimeout(logoutTimer)
+    }
+  }, [token, logout, tokenExpiration])
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem('userData'))
