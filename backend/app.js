@@ -5,7 +5,6 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 
-const { MDB_USER, MDB_PASSWORD, PORT } = require('./util/server')
 const placesRoutes = require('./routes/places-routes')
 const usersRoutes = require('./routes/users-routes')
 const HttpError = require('./models/http-error')
@@ -61,10 +60,10 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    `mongodb+srv://${MDB_USER}:${MDB_PASSWORD}@mern-app.easrui5.mongodb.net/merndb?retryWrites=true&w=majority`
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@mern-app.easrui5.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
   )
   .then(() => {
-    app.listen(PORT)
+    app.listen(process.env.PORT)
   })
   .catch((error) => {
     console.log(error)

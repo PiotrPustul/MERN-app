@@ -1,8 +1,8 @@
 const axios = require('axios')
-const dotenv = require('dotenv')
 
 const HttpError = require('../models/http-error')
-const { API_KEY } = require('../util/server')
+
+const API_KEY = process.env.LOCATION_API_KEY
 
 const getCoordsForAddress = async (address) => {
   const query = encodeURIComponent(address)
